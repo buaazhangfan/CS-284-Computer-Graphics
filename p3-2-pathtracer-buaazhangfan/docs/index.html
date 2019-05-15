@@ -1,0 +1,355 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<style>  
+    div.padded {  
+      padding-top: 0px;  
+      padding-right: 100px;  
+      padding-bottom: 0.25in;  
+      padding-left: 100px;  
+    }  
+  </style> 
+<title>Fan Zhang  |  CS 184</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+</head>
+<body>
+<br />
+<h1 align="middle">Assignment 3: PathTracer</h1>
+    <h2 align="middle">Fan Zhang</h2>
+
+    <div class="padded">
+        <p>
+            This project is an extension of project 3-1 with some complex effect to render. 
+            The part1 and part2 still focused on material modeling. 
+            In project 3-1, we only considered the diffuse material, and here we added the mirror and glass material since objects with these two materials are common in the world. 
+            Also, we implemented the refraction effect which is another important property for light. 
+            Then, based on the microfacet theory, we implemented the microfacet BRDF to render the materials such as metals. 
+            The third part introduced a new kind of light source which is environment lighting. 
+            This lighting method simulated the real world lighting with infinite far away light sources. 
+            The last part introduced the simulation of a real lens. Since the lens has sizes and focal length so there exists a range of area that is clear while other parts are blurred. 
+            We implemented this effect called depth of field to make our rendered scene more like the result of a camera.
+        </p>
+
+    <h2 align="middle">Part 1: Ray Generation and Intersection</h2>
+        <ol>
+            <li>Result</li>
+            <div align="center">
+                <table style="width=100%">
+                    <tr>
+                        <td>
+                            <td align="middle">
+                            <img src="part1/CSspheres_m_0.png" width="300px" />
+                            <figcaption align="middle">Spheres: s = 128, l = 4, m = 0</figcaption>
+                        </td>
+                        <td>
+                            <td align="middle">
+                            <img src="part1/CSspheres_m_1.png" width="300px" />
+                            <figcaption align="middle">Spheres: s = 128, l = 4, m = 1</figcaption>
+                        </td>
+                        <td>
+                            <td align="middle">
+                            <img src="part1/CSspheres_m_2.png" width="300px" />
+                            <figcaption align="middle">Spheres: s = 128, l = 4, m = 2</figcaption>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <td align="middle">
+                            <img src="part1/CSspheres_m_3.png" width="300px" />
+                            <figcaption align="middle">Spheres: s = 128, l = 4, m = 3</figcaption>
+                        </td>
+                        <td>
+                            <td align="middle">
+                            <img src="part1/CSspheres_m_4.png" width="300px" />
+                            <figcaption align="middle">Spheres: s = 128, l = 4, m = 4</figcaption>
+                        </td>
+                        <td>
+                            <td align="middle">
+                            <img src="part1/CSspheres_m_5.png" width="300px" />
+                            <figcaption align="middle">Spheres: s = 128, l = 4, m = 5</figcaption>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <td align="middle">
+                            <img src="part1/CSspheres_m_100.png" width="300px" />
+                            <figcaption align="middle">Spheres: s = 128, l = 4, m = 100</figcaption>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        
+            <li>Multibounce Effects</li>
+            <p>
+                In this part I implemented the reflection and refraction of mirrors and glasses. 
+                All of the results above were rendered with 128 samples per pixel and 4 samples per light.
+            </p>
+            <p>
+                From the result, we can see when the maxmium depth of ray is 0, there is only zero bounce in the scene so we can only see the light on the ceiling with direct light.
+                When the depth is 1, there is only one bounce effect in the scene so we can see the walls. The glass sphere didn't show up because we need two refractions for a ray to transmitted into the camera.
+                Also, since there is no direct lighting here so both of these two spheres have no reflection effect.
+                When the depth is 2, the mirror sphere began to show up since there are reflection of light sources and walls. Little refraction was shown since there is no refraction from walls so the glass sphere was still almost dark.
+                When the depth is 3, both the glass and mirror spheres bacame bright because light from the walls now can transmit through the glass sphere. 
+                When the depth is 4, there is a bright spot on the floor below the glass sphere. It is because that light went through the sphere and then reflected by the floor into the camera. 
+                When the depth is 5, there is a small bright spot on the right wall because there is one more reflection on the right wall so we can trace the ray to the light source. 
+                The 100 bounce effect is similiar to 5 bounce effect because the 5 bounce rays took uo most of the rays traced in this scene. Also, due to russian roulette, many rays can't reach this depth.
+            </p>
+
+        </ol>
+    <h2 align="middle">Part 2: Microfacet Materials</h2>
+        <ol>
+            <li>Result with different alpha value</li>
+            <div align="center">
+                <table style="width=100%">
+                    <tr>
+                        <td>
+                            <td align="middle">
+                            <img src="part2/CBdragon_microfacet_au_alpha_0.005.png" width="300px" />
+                            <figcaption align="middle">Dragon: alpha = 0.005</figcaption>
+                        </td>
+                        <td>
+                            <td align="middle">
+                            <img src="part2/CBdragon_microfacet_au_alpha_0.05.png" width="300px" />
+                            <figcaption align="middle">Dragon: alpha = 0.05</figcaption>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <td align="middle">
+                            <img src="part2/CBdragon_microfacet_au_alpha_0.25.png" width="300px" />
+                            <figcaption align="middle">Dragon: alpha = 0.25</figcaption>
+                        </td>
+                        <td>
+                            <td align="middle">
+                            <img src="part2/CBdragon_microfacet_au_alpha_0.5.png" width="300px" />
+                            <figcaption align="middle">Dragon: alpha = 0.5</figcaption>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <p>
+                Since <b>alpha</b> is the roughness of the macro surface so for the rendered dragon, when alpha is the distributions of all microfacets' normals are concentrated so the overall result is similiar to glossy reflection.
+                When the value of alpha is high, the distributions of normals became spread so it is more like the diffuse reflection so the result is similiar to metal itself like gold.
+
+            <li>Result of uniform sampling and importance sampling</li>
+            <div align="center">
+                <table style="width=100%">
+                    <tr>
+                        <td>
+                            <td align="middle">
+                            <img src="part2/CBbunny_microfacet_cu_uniform.png" width="300px" />
+                            <figcaption align="middle">Bunny: Uniform Sample</figcaption>
+                        </td>
+                        <td>
+                            <td align="middle">
+                            <img src="part2/CBbunny_microfacet_cu_importance.png" width="300px" />
+                            <figcaption align="middle">Bunny: Importance Sample</figcaption>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <p>
+                Difference: When rendering with uniform sampling, the noise level of the result is higher than the importance sampling. 
+                Since uniform sampling considers every direction with the same pdf, so a lot of samples are useless which contributed to the noise. 
+                The importance sampling samples the direction with certain pdfs, so the probability of a sampled ray is the same as its real distributions so the result is much better. 
+                A uniform sampling distribution will take more samples to converge on the microfaceted materials because it samples the reflected rays as if they were off a diffuse material. 
+                However, the microfaceted material has a bias to some directions at a given angle. 
+                We model this behavior with some distribution function so we can do importance sampling with according the appropriate pdf.
+            </p>
+
+            <li>Resulf of other metal (Silver)</li>
+
+            <p>
+                I choose the Silver(Ag) as the material to render the CBbunny with importance sample.
+                The <b>eta</b> and the <b>k</b> is:
+            </p>
+
+            <p>
+                Red(614nm): eta = 0.059193, k = 4.1283
+            </p>
+
+            <p>
+                Green(549nm): eta = 0.059881, k = 3.5892
+            </p>
+
+            <p>
+                Blue(466nm): eta = 0.047366, k = 2.8132
+            </p>
+            <div align="center">
+                <table style="width=100%">
+                    <tr>
+                        <td align="middle">
+                        <img src="part2/CBbunny_microfacet_ag_importance.png" width="480px" />
+                        <figcaption align="middle">Bunny with Silver(Ag) as material</figcaption>
+                    </tr>
+                </table>
+            </div>
+        </ol>
+
+    <h2 align="middle">Part 3: Environment Light</h2>
+        <ol>
+            <li>The .exr texture map: field.exr</li>
+            <div align="center">
+                <table style="width=100%">
+                    <tr>
+                        <td align="middle">
+                        <img src="part3/field.png" width="480px" />
+                        <figcaption align="middle">field.exr</figcaption>
+                    </tr>
+                </table>
+            </div>
+            
+            <li>Ideas behind environment lighting</li>
+            <p>
+                Environment lighting is the lighting that simulates the outdoor lighting, often given by a bright source that is far away(almost infinite, just like in the real world with sunlight). 
+                We use an environment texture map which determines the RGB color and brightness of rays coming from every direction in a sphere. 
+                We can consider it as a textured material that can emit rays as a light source.
+            </p>
+            <li>Probability Result</li>
+            <div align="center">
+                <table style="width=100%">
+                    <tr>
+                        <td align="middle">
+                        <img src="part3/probability_debug.png" width="480px" />
+                        <figcaption align="middle">The probability distributions of texture map</figcaption>
+                    </tr>
+                </table>
+            </div>
+
+            <li>Result of Bunny_unlit</li>
+            <div align="center">
+                <table style="width=100%">
+                    <tr>
+                        <td>
+                            <td align="middle">
+                            <img src="part3/bunny_unlit_uniform.png" width="480px" />
+                            <figcaption align="middle">Bunny_unlit: Uniform Sampling</figcaption>
+                        </td>
+                        <td>
+                            <td align="middle">
+                            <img src="part3/bunny_unlit_importance.png" width="480px" />
+                            <figcaption align="middle">Bunny_unlit: Importance Sampling</figcaption>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <p>
+                Noise Levels: Compared with uniform sampling, the importance sampling has a lower noise level especially in the right and bottom part of the bunny. 
+                Also, for the uniform sampling, some details of the bunny is blurred and not clear.
+            </p>
+
+            <li>Result of Bunny_microfacet_cu_unlit</li>
+            <div align="center">
+                <table style="width=100%">
+                    <tr>
+                        <td>
+                            <td align="middle">
+                            <img src="part3/bunny_microfacet_cu_unlit_uniform.png" width="480px" />
+                            <figcaption align="middle">Bunny_microfacet_cu_unlit: Uniform Sampling</figcaption>
+                        </td>
+                        <td>
+                            <td align="middle">
+                            <img src="part3/bunny_microfacet_cu_unlit_importance.png" width="480px" />
+                            <figcaption align="middle">Bunny_microfacet_cu_unlit: Importance Sampling</figcaption>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <p>
+                When considering the reflection effect of the material of the bunny, since there is a sun on the environment map with the importance sampling, the part sampled from the sun made the result more smooth. 
+                Also, the details such as ears were clear when using importance sampling. 
+                In the meanwhile, since now the environment determines the reflection spectrum of the bunny so, with importance sampling, the dark area became more clear. 
+                There are also fewer noises in the glossy areas of the bunny.
+            </p>
+        </ol>
+
+    <h2 align="middle">Part 4: Depth of Field</h2>
+        <ol>
+            <li>Difference between pinhole camera model and thin-lens camera model</li>
+            <p>
+                A pinhole camera only has a point for rays to transmit, so everything is in focus, and the ray doesn't change its direction. 
+                However, the real camera lens have a certain size and properties such as focal length. 
+                The focal length defines the area where the object there can be clear while other areas are blurred. 
+                So the thin-lens camera model is more like the real world photos taken by cameras or scenes generated in our eyes.                
+            </p>
+
+            <li>Focus stack result (difference focal length)</li>
+            <p>
+                With different focal length, different areas will be focused. When the focal length is too small, all parts of the dragon are not focused. 
+                When the focal length increased, the focusing area moved further so some part of the dragon can be focused.
+            </p>
+            <div align="center">
+                <table style="width=100%">
+                    <tr>
+                        <td>
+                            <td align="middle">
+                            <img src="part4/1.0_0.0282843.png" width="480px" />
+                            <figcaption align="middle">CBdragon_microfacet_au: lensRadius = 0.0282843, focal distance = 1.0</figcaption>
+                        </td>
+                        <td>
+                            <td align="middle">
+                            <img src="part4/1.4_0.0282843.png" width="480px" />
+                            <figcaption align="middle">CBdragon_microfacet_au: lensRadius = 0.0282843, focal distance = 1.4</figcaption>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <td align="middle">
+                            <img src="part4/1.8_0.0282843.png" width="480px" />
+                            <figcaption align="middle">CBdragon_microfacet_au: lensRadius = 0.0282843, focal distance = 1.8</figcaption>
+                        </td>
+                        <td>
+                            <td align="middle">
+                            <img src="part4/2.2_0.0282843.png" width="480px" />
+                            <figcaption align="middle">CBdragon_microfacet_au: lensRadius = 0.0282843, focal distance = 2.2</figcaption>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <li>Result with different aperture size(focal length fixed, change lens radius)</li>
+            <p>
+                Here, the focal length is same so we can see that the depth of field is inversely proportional to aperture size(lens size)
+            </p>
+            <div align="center">
+                <table style="width=100%">
+                    <tr>
+                        <td>
+                            <td align="middle">
+                            <img src="part4/2.1_0.10.png" width="480px" />
+                            <figcaption align="middle">CBdragon_microfacet_au: lensRadius = 0.1, focal distance = 2.1</figcaption>
+                        </td>
+                        <td>
+                            <td align="middle">
+                            <img src="part4/2.1_0.20.png" width="480px" />
+                            <figcaption align="middle">CBdragon_microfacet_au: lensRadius = 0.2, focal distance = 2.1</figcaption>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <td align="middle">
+                            <img src="part4/2.1_0.40.png" width="480px" />
+                            <figcaption align="middle">CBdragon_microfacet_au: lensRadius = 0.4, focal distance = 2.1</figcaption>
+                        </td>
+                        <td>
+                            <td align="middle">
+                            <img src="part4/2.1_0.50.png" width="480px" />
+                            <figcaption align="middle">CBdragon_microfacet_au: lensRadius = 0.5, focal distance = 2.1</figcaption>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </ol>
+
+</div>
+</body>
+</html>
+
+
+
+

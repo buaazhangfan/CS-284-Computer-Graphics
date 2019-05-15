@@ -1,0 +1,4 @@
+.DS_Store
+build
+exr
+cmake-build-debug/

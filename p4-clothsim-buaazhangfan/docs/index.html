@@ -1,0 +1,820 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+<title>CS184-hw4</title><link href='https://fonts.loli.net/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext' rel='stylesheet' type='text/css' /><style type='text/css'>html {overflow-x: initial !important;}:root { --bg-color: #ffffff; --text-color: #333333; --select-text-bg-color: #B5D6FC; --select-text-font-color: auto; --monospace: "Lucida Console",Consolas,"Courier",monospace; }
+html { font-size: 14px; background-color: var(--bg-color); color: var(--text-color); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+body { margin: 0px; padding: 0px; height: auto; bottom: 0px; top: 0px; left: 0px; right: 0px; font-size: 1rem; line-height: 1.42857143; overflow-x: hidden; background-image: inherit; background-size: inherit; background-attachment: inherit; background-origin: inherit; background-clip: inherit; background-color: inherit; background-position: inherit inherit; background-repeat: inherit inherit; }
+iframe { margin: auto; }
+a.url { word-break: break-all; }
+a:active, a:hover { outline: 0px; }
+.in-text-selection, ::selection { text-shadow: none; background: var(--select-text-bg-color); color: var(--select-text-font-color); }
+#write { margin: 0px auto; height: auto; width: inherit; word-break: normal; word-wrap: break-word; position: relative; white-space: normal; overflow-x: visible; padding-top: 40px; }
+#write.first-line-indent p { text-indent: 2em; }
+#write.first-line-indent li p, #write.first-line-indent p * { text-indent: 0px; }
+#write.first-line-indent li { margin-left: 2em; }
+.for-image #write { padding-left: 8px; padding-right: 8px; }
+body.typora-export { padding-left: 30px; padding-right: 30px; }
+.typora-export .footnote-line, .typora-export li, .typora-export p { white-space: pre-wrap; }
+@media screen and (max-width: 500px) { 
+  body.typora-export { padding-left: 0px; padding-right: 0px; }
+  #write { padding-left: 20px; padding-right: 20px; }
+  .CodeMirror-sizer { margin-left: 0px !important; }
+  .CodeMirror-gutters { display: none !important; }
+}
+#write li > figure:first-child { margin-top: -20px; }
+#write ol, #write ul { position: relative; }
+img { max-width: 100%; vertical-align: middle; }
+button, input, select, textarea { color: inherit; font-family: inherit; font-size: inherit; font-style: inherit; font-variant-caps: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; }
+input[type="checkbox"], input[type="radio"] { line-height: normal; padding: 0px; }
+*, ::after, ::before { box-sizing: border-box; }
+#write h1, #write h2, #write h3, #write h4, #write h5, #write h6, #write p, #write pre { width: inherit; }
+#write h1, #write h2, #write h3, #write h4, #write h5, #write h6, #write p { position: relative; }
+h1, h2, h3, h4, h5, h6 { break-after: avoid-page; break-inside: avoid; orphans: 2; }
+p { orphans: 4; }
+h1 { font-size: 2rem; }
+h2 { font-size: 1.8rem; }
+h3 { font-size: 1.6rem; }
+h4 { font-size: 1.4rem; }
+h5 { font-size: 1.2rem; }
+h6 { font-size: 1rem; }
+.md-math-block, .md-rawblock, h1, h2, h3, h4, h5, h6, p { margin-top: 1rem; margin-bottom: 1rem; }
+.hidden { display: none; }
+.md-blockmeta { color: rgb(204, 204, 204); font-weight: 700; font-style: italic; }
+a { cursor: pointer; }
+sup.md-footnote { padding: 2px 4px; background-color: rgba(238, 238, 238, 0.701961); color: rgb(85, 85, 85); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; cursor: pointer; }
+sup.md-footnote a, sup.md-footnote a:hover { color: inherit; text-transform: inherit; text-decoration: inherit; }
+#write input[type="checkbox"] { cursor: pointer; width: inherit; height: inherit; }
+figure { overflow-x: auto; margin: 1.2em 0px; max-width: calc(100% + 16px); padding: 0px; }
+figure > table { margin: 0px !important; }
+tr { break-inside: avoid; break-after: auto; }
+thead { display: table-header-group; }
+table { border-collapse: collapse; border-spacing: 0px; width: 100%; overflow: auto; break-inside: auto; text-align: left; }
+table.md-table td { min-width: 32px; }
+.CodeMirror-gutters { border-right-width: 0px; background-color: inherit; }
+.CodeMirror { text-align: left; }
+.CodeMirror-placeholder { opacity: 0.3; }
+.CodeMirror pre { padding: 0px 4px; }
+.CodeMirror-lines { padding: 0px; }
+div.hr:focus { cursor: none; }
+#write pre { white-space: pre-wrap; }
+#write.fences-no-line-wrapping pre { white-space: pre; }
+#write pre.ty-contain-cm { white-space: normal; }
+.CodeMirror-gutters { margin-right: 4px; }
+.md-fences { font-size: 0.9rem; display: block; break-inside: avoid; text-align: left; overflow: visible; white-space: pre; background-image: inherit; background-size: inherit; background-attachment: inherit; background-origin: inherit; background-clip: inherit; background-color: inherit; position: relative !important; background-position: inherit inherit; background-repeat: inherit inherit; }
+.md-diagram-panel { width: 100%; margin-top: 10px; text-align: center; padding-top: 0px; padding-bottom: 8px; overflow-x: auto; }
+#write .md-fences.mock-cm { white-space: pre-wrap; }
+.md-fences.md-fences-with-lineno { padding-left: 0px; }
+#write.fences-no-line-wrapping .md-fences.mock-cm { white-space: pre; overflow-x: auto; }
+.md-fences.mock-cm.md-fences-with-lineno { padding-left: 8px; }
+.CodeMirror-line, twitterwidget { break-inside: avoid; }
+.footnotes { opacity: 0.8; font-size: 0.9rem; margin-top: 1em; margin-bottom: 1em; }
+.footnotes + .footnotes { margin-top: 0px; }
+.md-reset { margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: top; text-decoration: none; text-shadow: none; float: none; position: static; width: auto; height: auto; white-space: nowrap; cursor: inherit; line-height: normal; font-weight: 400; text-align: left; box-sizing: content-box; direction: ltr; background-position: 0px 0px; background-repeat: initial initial; }
+li div { padding-top: 0px; }
+blockquote { margin: 1rem 0px; }
+li .mathjax-block, li p { margin: 0.5rem 0px; }
+li { margin: 0px; position: relative; }
+blockquote > :last-child { margin-bottom: 0px; }
+blockquote > :first-child, li > :first-child { margin-top: 0px; }
+.footnotes-area { color: rgb(136, 136, 136); margin-top: 0.714rem; padding-bottom: 0.143rem; white-space: normal; }
+#write .footnote-line { white-space: pre-wrap; }
+@media print { 
+  body, html { border: 1px solid transparent; height: 99%; break-after: avoid-page; break-before: avoid-page; }
+  #write { margin-top: 0px; padding-top: 0px; border-color: transparent !important; }
+  .typora-export * { -webkit-print-color-adjust: exact; }
+  html.blink-to-pdf { font-size: 13px; }
+  .typora-export #write { padding-left: 32px; padding-right: 32px; padding-bottom: 0px; break-after: avoid-page; }
+  .typora-export #write::after { height: 0px; }
+  @page { margin: 20mm 0px; }
+}
+.footnote-line { margin-top: 0.714em; font-size: 0.7em; }
+a img, img a { cursor: pointer; }
+pre.md-meta-block { font-size: 0.8rem; min-height: 0.8rem; white-space: pre-wrap; background-color: rgb(204, 204, 204); display: block; overflow-x: hidden; background-position: initial initial; background-repeat: initial initial; }
+p > .md-image:only-child:not(.md-img-error) img, p > img:only-child { display: block; margin: auto; }
+p > .md-image:only-child { display: inline-block; width: 100%; }
+#write .MathJax_Display { margin: 0.8em 0px 0px; }
+.md-math-block { width: 100%; }
+.md-math-block:not(:empty)::after { display: none; }
+[contenteditable="true"]:active, [contenteditable="true"]:focus { outline: 0px; box-shadow: none; }
+.md-task-list-item { position: relative; list-style-type: none; }
+.task-list-item.md-task-list-item { padding-left: 0px; }
+.md-task-list-item > input { position: absolute; top: 0px; left: 0px; margin-left: -1.2em; margin-top: calc(1em - 10px); border: none; }
+.math { font-size: 1rem; }
+.md-toc { min-height: 3.58rem; position: relative; font-size: 0.9rem; border-top-left-radius: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px; border-bottom-left-radius: 10px; }
+.md-toc-content { position: relative; margin-left: 0px; }
+.md-toc-content::after, .md-toc::after { display: none; }
+.md-toc-item { display: block; color: rgb(65, 131, 196); }
+.md-toc-item a { text-decoration: none; }
+.md-toc-inner:hover { text-decoration: underline; }
+.md-toc-inner { display: inline-block; cursor: pointer; }
+.md-toc-h1 .md-toc-inner { margin-left: 0px; font-weight: 700; }
+.md-toc-h2 .md-toc-inner { margin-left: 2em; }
+.md-toc-h3 .md-toc-inner { margin-left: 4em; }
+.md-toc-h4 .md-toc-inner { margin-left: 6em; }
+.md-toc-h5 .md-toc-inner { margin-left: 8em; }
+.md-toc-h6 .md-toc-inner { margin-left: 10em; }
+@media screen and (max-width: 48em) { 
+  .md-toc-h3 .md-toc-inner { margin-left: 3.5em; }
+  .md-toc-h4 .md-toc-inner { margin-left: 5em; }
+  .md-toc-h5 .md-toc-inner { margin-left: 6.5em; }
+  .md-toc-h6 .md-toc-inner { margin-left: 8em; }
+}
+a.md-toc-inner { font-size: inherit; font-style: inherit; font-weight: inherit; line-height: inherit; }
+.footnote-line a:not(.reversefootnote) { color: inherit; }
+.md-attr { display: none; }
+.md-fn-count::after { content: "."; }
+code, pre, samp, tt { font-family: var(--monospace); }
+kbd { margin: 0px 0.1em; padding: 0.1em 0.6em; font-size: 0.8em; color: rgb(36, 39, 41); background-color: rgb(255, 255, 255); border: 1px solid rgb(173, 179, 185); border-top-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px; border-bottom-left-radius: 3px; box-shadow: rgba(12, 13, 14, 0.2) 0px 1px 0px, rgb(255, 255, 255) 0px 0px 0px 2px inset; white-space: nowrap; vertical-align: middle; background-position: initial initial; background-repeat: initial initial; }
+.md-comment { color: rgb(162, 127, 3); opacity: 0.8; font-family: var(--monospace); }
+code { text-align: left; }
+a.md-print-anchor { white-space: pre !important; border: none !important; display: inline-block !important; position: absolute !important; width: 1px !important; right: 0px !important; outline: 0px !important; text-shadow: initial !important; background-position: 0px 0px !important; background-repeat: initial initial !important; }
+.md-inline-math .MathJax_SVG .noError { display: none !important; }
+.html-for-mac .inline-math-svg .MathJax_SVG { vertical-align: 0.2px; }
+.md-math-block .MathJax_SVG_Display { text-align: center; margin: 0px; position: relative; text-indent: 0px; max-width: none; max-height: none; min-height: 0px; min-width: 100%; width: auto; overflow-y: hidden; display: block !important; }
+.MathJax_SVG_Display, .md-inline-math .MathJax_SVG_Display { width: auto; margin: inherit; display: inline-block !important; }
+.MathJax_SVG .MJX-monospace { font-family: var(--monospace); }
+.MathJax_SVG .MJX-sans-serif { font-family: sans-serif; }
+.MathJax_SVG { display: inline; font-style: normal; font-weight: 400; line-height: normal; zoom: 90%; text-indent: 0px; text-align: left; text-transform: none; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0px; min-height: 0px; border: 0px; padding: 0px; margin: 0px; }
+.MathJax_SVG * { transition: none; }
+.MathJax_SVG_Display svg { vertical-align: middle !important; margin-bottom: 0px !important; }
+.os-windows.monocolor-emoji .md-emoji { font-family: "Segoe UI Symbol", sans-serif; }
+.md-diagram-panel > svg { max-width: 100%; }
+[lang="mermaid"] svg, [lang="flow"] svg { max-width: 100%; }
+[lang="mermaid"] .node text { font-size: 1rem; }
+table tr th { border-bottom-width: 0px; }
+video { max-width: 100%; display: block; margin: 0px auto; }
+iframe { max-width: 100%; width: 100%; border: none; }
+.highlight td, .highlight tr { border: 0px; }
+
+
+:root {
+    --side-bar-bg-color: #fafafa;
+    --control-text-color: #777;
+}
+
+@include-when-export url(https://fonts.loli.net/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext);
+
+html {
+    font-size: 16px;
+}
+
+body {
+    font-family: "Open Sans","Clear Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+    color: rgb(51, 51, 51);
+    line-height: 1.6;
+}
+
+#write {
+    max-width: 860px;
+  	margin: 0 auto;
+  	padding: 30px;
+    padding-bottom: 100px;
+}
+#write > ul:first-child,
+#write > ol:first-child{
+    margin-top: 30px;
+}
+
+a {
+    color: #4183C4;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    position: relative;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    line-height: 1.4;
+    cursor: text;
+}
+h1:hover a.anchor,
+h2:hover a.anchor,
+h3:hover a.anchor,
+h4:hover a.anchor,
+h5:hover a.anchor,
+h6:hover a.anchor {
+    text-decoration: none;
+}
+h1 tt,
+h1 code {
+    font-size: inherit;
+}
+h2 tt,
+h2 code {
+    font-size: inherit;
+}
+h3 tt,
+h3 code {
+    font-size: inherit;
+}
+h4 tt,
+h4 code {
+    font-size: inherit;
+}
+h5 tt,
+h5 code {
+    font-size: inherit;
+}
+h6 tt,
+h6 code {
+    font-size: inherit;
+}
+h1 {
+    padding-bottom: .3em;
+    font-size: 2.25em;
+    line-height: 1.2;
+    border-bottom: 1px solid #eee;
+}
+h2 {
+   padding-bottom: .3em;
+    font-size: 1.75em;
+    line-height: 1.225;
+    border-bottom: 1px solid #eee;
+}
+h3 {
+    font-size: 1.5em;
+    line-height: 1.43;
+}
+h4 {
+    font-size: 1.25em;
+}
+h5 {
+    font-size: 1em;
+}
+h6 {
+   font-size: 1em;
+    color: #777;
+}
+p,
+blockquote,
+ul,
+ol,
+dl,
+table{
+    margin: 0.8em 0;
+}
+li>ol,
+li>ul {
+    margin: 0 0;
+}
+hr {
+    height: 2px;
+    padding: 0;
+    margin: 16px 0;
+    background-color: #e7e7e7;
+    border: 0 none;
+    overflow: hidden;
+    box-sizing: content-box;
+}
+
+li p.first {
+    display: inline-block;
+}
+ul,
+ol {
+    padding-left: 30px;
+}
+ul:first-child,
+ol:first-child {
+    margin-top: 0;
+}
+ul:last-child,
+ol:last-child {
+    margin-bottom: 0;
+}
+blockquote {
+    border-left: 4px solid #dfe2e5;
+    padding: 0 15px;
+    color: #777777;
+}
+blockquote blockquote {
+    padding-right: 0;
+}
+table {
+    padding: 0;
+    word-break: initial;
+}
+table tr {
+    border-top: 1px solid #dfe2e5;
+    margin: 0;
+    padding: 0;
+}
+table tr:nth-child(2n),
+thead {
+    background-color: #f8f8f8;
+}
+table tr th {
+    font-weight: bold;
+    border: 1px solid #dfe2e5;
+    border-bottom: 0;
+    text-align: left;
+    margin: 0;
+    padding: 6px 13px;
+}
+table tr td {
+    border: 1px solid #dfe2e5;
+    text-align: left;
+    margin: 0;
+    padding: 6px 13px;
+}
+table tr th:first-child,
+table tr td:first-child {
+    margin-top: 0;
+}
+table tr th:last-child,
+table tr td:last-child {
+    margin-bottom: 0;
+}
+
+.CodeMirror-lines {
+    padding-left: 4px;
+}
+
+.code-tooltip {
+    box-shadow: 0 1px 1px 0 rgba(0,28,36,.3);
+    border-top: 1px solid #eef2f2;
+}
+
+.md-fences,
+code,
+tt {
+    border: 1px solid #e7eaed;
+    background-color: #f8f8f8;
+    border-radius: 3px;
+    padding: 0;
+    padding: 2px 4px 0px 4px;
+    font-size: 0.9em;
+}
+
+code {
+    background-color: #f3f4f4;
+    padding: 0 2px 0 2px;
+}
+
+.md-fences {
+    margin-bottom: 15px;
+    margin-top: 15px;
+    padding-top: 8px;
+    padding-bottom: 6px;
+}
+
+
+.md-task-list-item > input {
+  margin-left: -1.3em;
+}
+
+@media print {
+    html {
+        font-size: 13px;
+    }
+    table,
+    pre {
+        page-break-inside: avoid;
+    }
+    pre {
+        word-wrap: break-word;
+    }
+}
+
+.md-fences {
+	background-color: #f8f8f8;
+}
+#write pre.md-meta-block {
+	padding: 1rem;
+    font-size: 85%;
+    line-height: 1.45;
+    background-color: #f7f7f7;
+    border: 0;
+    border-radius: 3px;
+    color: #777777;
+    margin-top: 0 !important;
+}
+
+.mathjax-block>.code-tooltip {
+	bottom: .375rem;
+}
+
+.md-mathjax-midline {
+    background: #fafafa;
+}
+
+#write>h3.md-focus:before{
+	left: -1.5625rem;
+	top: .375rem;
+}
+#write>h4.md-focus:before{
+	left: -1.5625rem;
+	top: .285714286rem;
+}
+#write>h5.md-focus:before{
+	left: -1.5625rem;
+	top: .285714286rem;
+}
+#write>h6.md-focus:before{
+	left: -1.5625rem;
+	top: .285714286rem;
+}
+.md-image>.md-meta {
+    /*border: 1px solid #ddd;*/
+    border-radius: 3px;
+    padding: 2px 0px 0px 4px;
+    font-size: 0.9em;
+    color: inherit;
+}
+
+.md-tag {
+    color: #a7a7a7;
+    opacity: 1;
+}
+
+.md-toc { 
+    margin-top:20px;
+    padding-bottom:20px;
+}
+
+.sidebar-tabs {
+    border-bottom: none;
+}
+
+#typora-quick-open {
+    border: 1px solid #ddd;
+    background-color: #f8f8f8;
+}
+
+#typora-quick-open-item {
+    background-color: #FAFAFA;
+    border-color: #FEFEFE #e5e5e5 #e5e5e5 #eee;
+    border-style: solid;
+    border-width: 1px;
+}
+
+/** focus mode */
+.on-focus-mode blockquote {
+    border-left-color: rgba(85, 85, 85, 0.12);
+}
+
+header, .context-menu, .megamenu-content, footer{
+    font-family: "Segoe UI", "Arial", sans-serif;
+}
+
+.file-node-content:hover .file-node-icon,
+.file-node-content:hover .file-node-open-state{
+    visibility: visible;
+}
+
+.mac-seamless-mode #typora-sidebar {
+    background-color: #fafafa;
+    background-color: var(--side-bar-bg-color);
+}
+
+.md-lang {
+    color: #b4654d;
+}
+
+.html-for-mac .context-menu {
+    --item-hover-bg-color: #E6F0FE;
+}
+
+#md-notification .btn {
+    border: 0;
+}
+
+.dropdown-menu .divider {
+    border-color: #e5e5e5;
+}
+
+ .typora-export li, .typora-export p, .typora-export,  .footnote-line {white-space: normal;} 
+</style>
+</head>
+<body class='typora-export' >
+<div  id='write'  class = 'is-mac'><h1><a name='header-n0' class='md-header-anchor '></a><center>CS 284: Computer Graphics and Imaging, Spring 2019</center></h1><h2><a name='header-n2' class='md-header-anchor '></a><center>Project 4: Cloth Simulator</center></h2><h2><a name='header-n3' class='md-header-anchor '></a><center>Fan Zhang</center></h2><p>&nbsp;</p><h3><a name='header-n5' class='md-header-anchor '></a><center>Overview</center></h3><p>In this project I implemented the cloth simulator based on physical simulation and shader with GLSL program. The fundamental of cloth is mass and spring system. With Hook&#39;s law and Netwon&#39;s Law, we can simulate the physical properties of masses and springs. The following parts went through the movement and collisions with spheres/planes and the cloth itself. For the shader part, based on GLSL programming, we implemented several different shading types.</p><p>This project was really interesting since we can ovserve the physical movement of the cloth and made the simulation more and more realistic. </p><h3><a name='header-n8' class='md-header-anchor '></a><center>Part 1: Masses and springs</center></h3><h4><a name='header-n9' class='md-header-anchor '></a>1. Implementation Details</h4><p>In this part, I built the mass and spring system for cloth simulation. The basic idea was to create point masses first at specific positions and then connect mass pairs with different constraints. The implementation is straightforward which looped all the points and assign point masses and springs. One thing to be noticed is to de edge detection when setting the springs since some positions are out of the range.</p><h4><a name='header-n11' class='md-header-anchor '></a>2. Result from different viewpoints</h4><div align="center">
+  <table style="width=100%">
+    <tbody><tr>
+      <td>
+      	</td><td align="middle">
+        <img src="part1/p1-1.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">Pinned2.json: with default viewpoint</figcaption>
+      </td>
+      <td>
+      	</td><td align="middle">
+        <img src="part1/p1-2.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">Pinned2.json: with another viewpoint</figcaption>
+      </td>
+    </tr>
+  </tbody></table>
+</div><h4><a name='header-n14' class='md-header-anchor '></a>3. Result with constraints</h4><div align="center">
+  <table style="width=100%">
+    <tbody><tr>
+      <td>
+      	</td><td align="middle">
+        <img src="part1/no_shear.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">Pinned2.json: without any shearing constraints</figcaption>
+      </td>
+      <td>
+      	</td><td align="middle">
+        <img src="part1/only_shear.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">Pinned2.json: with only shearing constraints</figcaption>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      	</td><td align="middle">
+        <img src="part1/all.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">Pinned2.json: with all constraints</figcaption>
+      </td>
+    </tr>
+  </tbody></table>
+</div><h3><a name='header-n17' class='md-header-anchor '></a><center>Part 2: Simulation via numerical integration</center></h3><h4><a name='header-n18' class='md-header-anchor '></a>1. Implementation Details</h4><p>In this part, I applied the force to each point mass and then calculated the updated force. Following the instructions, I first used the <code>external_accelerations</code> to each point mass uniformly to calculate the force with <strong>Newton&#39;s law</strong>. Second, calculate the force applied by springs with <strong>Hook&#39;s law</strong>. Be careful of directions of forces for two point masses connected to one spring. </p><p>After calculating the force, using the <strong>Verlet integration</strong> to compute new point mass positions and implementing an additional check to see whether the length of spring is 10% greater than its <code>rest_length</code>. If exceeded, recalculate the position of point masses.</p><h4><a name='header-n21' class='md-header-anchor '></a>2. Result</h4><h5><a name='header-n22' class='md-header-anchor '></a>2.1 Effects of changing the spring constant ks</h5><div align="center">
+  <table style="width=100%">
+    <tbody><tr>
+      <td>
+      	</td><td align="middle">
+        <img src="part2/ks_10.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">Pinned2.json: ks = 10</figcaption>
+      </td>
+      <td>
+      	</td><td align="middle">
+        <img src="part2/ks_1000.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">Pinned2.json: ks = 1000</figcaption>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      	</td><td align="middle">
+        <img src="part2/ks_8000.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">Pinned2.json: ks = 8000</figcaption>
+      </td>
+      <td>
+      	</td><td align="middle">
+        <img src="part2/ks_100000.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">Pinned2.json: ks = 100000</figcaption>
+      </td>
+    </tr>
+  </tbody></table>
+</div><p>I cut out the final status of cloth with different spring constant <code>ks</code>. From the result we can see that for a smaller <code>ks</code>, the cloth is more stretched since the internal forces with springs are lower so there are some drapes in the cloth. When the <code>ks</code> increased, the cloth became more tightened and the effect of drooping between two pinned point masses is weakened. In the last image when the <code>ks = 100000</code>, the cloth is almost a square without the effect of gravity. </p><h5><a name='header-n25' class='md-header-anchor '></a>2.2 Effects of changing the density</h5><div align="center">
+  <table style="width=100%">
+    <tbody><tr>
+      <td>
+      	</td><td align="middle">
+        <img src="part2/density_10.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">Pinned2.json: density = 1g/cm2</figcaption>
+      </td>
+      <td>
+      	</td><td align="middle">
+        <img src="part2/density_50.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">Pinned2.json: density = 5g/cm2</figcaption>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      	</td><td align="middle">
+        <img src="part2/density_150.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">Pinned2.json: density = 15g/cm2</figcaption>
+      </td>
+      <td>
+      	</td><td align="middle">
+        <img src="part2/density_500.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">Pinned2.json: density = 50g/cm2</figcaption>
+      </td>
+    </tr>
+  </tbody></table>
+</div><p>I cut out the final status of cloth with different density of point masses. Since the density is used to calculate the mass, so a smaller density corresponds to a lighter point mass. From the result when the density is low at 10, the effect of droop for the first row of point masses is not apparent. But when the density increased, the effect became more and more apparent. </p><h5><a name='header-n28' class='md-header-anchor '></a>2.3 Effects of changing the damping</h5><div align="center">
+  <table style="width=100%">
+    <tbody><tr>
+      <td>
+      	</td><td align="middle">
+        <img src="part2/damping_0.01.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">Pinned2.json: damping = 0.01</figcaption>
+      </td>
+      <td>
+      	</td><td align="middle">
+        <img src="part2/damping_0.2.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">Pinned2.json: damping = 0.2</figcaption>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      	</td><td align="middle">
+        <img src="part2/damping_0.7.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">Pinned2.json: damping = 0.7</figcaption>
+      </td>
+      <td>
+      	</td><td align="middle">
+        <img src="part2/damping_1.0.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">Pinned2.json: damping = 1.0</figcaption>
+      </td>
+    </tr>
+  </tbody></table>
+</div><p>The <code>damping</code> is used when I computed the positions of new point masses to simulate loss of energy due to friction, heat loss, etc. When the value is low, such as 0.01, from the first image we can see since the loss of energy is low so it is hard for the cloth to stop wobbling. The speed of the cloth was also fast that there were many drapes on the cloth. When the value went up, the movement of the cloth became much lower and it took little time to settle down. From the last image when the value is high, the cloth moved very slow and there is fewer drapes.</p><h5><a name='header-n31' class='md-header-anchor '></a>2.3 Result of pinned4.json</h5><p><img src='part2/pinned4.png' alt='pinned4' referrerPolicy='no-referrer' /></p><center>Then result of pinned4.json</center><h3><a name='header-n34' class='md-header-anchor '></a><center>Part 3: Handling collisions with other objects</center></h3><h4><a name='header-n35' class='md-header-anchor '></a>1. Implementation Details</h4><p>Here I implemented the collide function with spheres and planes. The overall ideas are the same. We assume that in an update that the point mass moves into the sphere or cross the plane, then we use the current position to calculate the tangent point. The tangent point is used to calculate the correction vector starts from the point mass&#39;s last position to update the new position when colliding with spheres or planes. </p><h4><a name='header-n37' class='md-header-anchor '></a>2. Result</h4><h5><a name='header-n38' class='md-header-anchor '></a>2.1 Sphere collision with different ks</h5><div align="center">
+  <table style="width=100%">
+    <tbody><tr>
+      <td>
+      	</td><td align="middle">
+        <img src="part3/sphere_ks_500.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">Sphere.json: ks = 500</figcaption>
+      </td>
+      <td>
+      	</td><td align="middle">
+        <img src="part3/sphere_ks_5000.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">Sphere.json: ks = 5000</figcaption>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      	</td><td align="middle">
+        <img src="part3/sphere_ks_50000.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">Sphere.json: ks = 50000</figcaption>
+      </td>
+    </tr>
+  </tbody></table>
+</div><p>A larger ks corresponds to a larger force with spring. From the above images, when the ks is low, the forces were weak so the cloth drooped around the sphere. When the ks increased, the internal forces with springs became stronger so the shape of cloth became more patulous.</p><h5><a name='header-n41' class='md-header-anchor '></a>2.2 Plane collision</h5><p><img src='part3/plane.png' alt='plane' referrerPolicy='no-referrer' /></p><center>Cloth lying peacefully at rest on the plane with texture</center><p>&nbsp;</p><h3><a name='header-n45' class='md-header-anchor '></a><center>Part 4: Handling self-collisions</center></h3><h4><a name='header-n46' class='md-header-anchor '></a>1. Implementation Detail</h4><p>In this part, I implemented the self collisions of cloth. Since looping all the pair of masses requires a lot of time we partition the area into 3D boxes. First, we used a hash map to store point masses in the same box, and we only considered point masses within a 3D box to collide with each other. After we build this hash map, we can loop all the point masses and force them to stay away from another in the same 3D box with a certain distance.</p><p>The hash function that I used to calculate the hash value is :</p><p><span class="MathJax_SVG" tabindex="-1" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="38.393ex" height="3.044ex" viewBox="0 -956.9 16530.2 1310.7" role="img" focusable="false" style="vertical-align: -0.822ex;"><defs><path stroke-width="0" id="E1-MJMATHI-62" d="M73 647Q73 657 77 670T89 683Q90 683 161 688T234 694Q246 694 246 685T212 542Q204 508 195 472T180 418L176 399Q176 396 182 402Q231 442 283 442Q345 442 383 396T422 280Q422 169 343 79T173 -11Q123 -11 82 27T40 150V159Q40 180 48 217T97 414Q147 611 147 623T109 637Q104 637 101 637H96Q86 637 83 637T76 640T73 647ZM336 325V331Q336 405 275 405Q258 405 240 397T207 376T181 352T163 330L157 322L136 236Q114 150 114 114Q114 66 138 42Q154 26 178 26Q211 26 245 58Q270 81 285 114T318 219Q336 291 336 325Z"></path><path stroke-width="0" id="E1-MJMATHI-6F" d="M201 -11Q126 -11 80 38T34 156Q34 221 64 279T146 380Q222 441 301 441Q333 441 341 440Q354 437 367 433T402 417T438 387T464 338T476 268Q476 161 390 75T201 -11ZM121 120Q121 70 147 48T206 26Q250 26 289 58T351 142Q360 163 374 216T388 308Q388 352 370 375Q346 405 306 405Q243 405 195 347Q158 303 140 230T121 120Z"></path><path stroke-width="0" id="E1-MJMATHI-78" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"></path><path stroke-width="0" id="E1-MJMAIN-2217" d="M229 286Q216 420 216 436Q216 454 240 464Q241 464 245 464T251 465Q263 464 273 456T283 436Q283 419 277 356T270 286L328 328Q384 369 389 372T399 375Q412 375 423 365T435 338Q435 325 425 315Q420 312 357 282T289 250L355 219L425 184Q434 175 434 161Q434 146 425 136T401 125Q393 125 383 131T328 171L270 213Q283 79 283 63Q283 53 276 44T250 35Q231 35 224 44T216 63Q216 80 222 143T229 213L171 171Q115 130 110 127Q106 124 100 124Q87 124 76 134T64 161Q64 166 64 169T67 175T72 181T81 188T94 195T113 204T138 215T170 230T210 250L74 315Q65 324 65 338Q65 353 74 363T98 374Q106 374 116 368T171 328L229 286Z"></path><path stroke-width="0" id="E1-MJMAIN-33" d="M127 463Q100 463 85 480T69 524Q69 579 117 622T233 665Q268 665 277 664Q351 652 390 611T430 522Q430 470 396 421T302 350L299 348Q299 347 308 345T337 336T375 315Q457 262 457 175Q457 96 395 37T238 -22Q158 -22 100 21T42 130Q42 158 60 175T105 193Q133 193 151 175T169 130Q169 119 166 110T159 94T148 82T136 74T126 70T118 67L114 66Q165 21 238 21Q293 21 321 74Q338 107 338 175V195Q338 290 274 322Q259 328 213 329L171 330L168 332Q166 335 166 348Q166 366 174 366Q202 366 232 371Q266 376 294 413T322 525V533Q322 590 287 612Q265 626 240 626Q208 626 181 615T143 592T132 580H135Q138 579 143 578T153 573T165 566T175 555T183 540T186 520Q186 498 172 481T127 463Z"></path><path stroke-width="0" id="E1-MJMAIN-37" d="M55 458Q56 460 72 567L88 674Q88 676 108 676H128V672Q128 662 143 655T195 646T364 644H485V605L417 512Q408 500 387 472T360 435T339 403T319 367T305 330T292 284T284 230T278 162T275 80Q275 66 275 52T274 28V19Q270 2 255 -10T221 -22Q210 -22 200 -19T179 0T168 40Q168 198 265 368Q285 400 349 489L395 552H302Q128 552 119 546Q113 543 108 522T98 479L95 458V455H55V458Z"></path><path stroke-width="0" id="E1-MJMAIN-39" d="M352 287Q304 211 232 211Q154 211 104 270T44 396Q42 412 42 436V444Q42 537 111 606Q171 666 243 666Q245 666 249 666T257 665H261Q273 665 286 663T323 651T370 619T413 560Q456 472 456 334Q456 194 396 97Q361 41 312 10T208 -22Q147 -22 108 7T68 93T121 149Q143 149 158 135T173 96Q173 78 164 65T148 49T135 44L131 43Q131 41 138 37T164 27T206 22H212Q272 22 313 86Q352 142 352 280V287ZM244 248Q292 248 321 297T351 430Q351 508 343 542Q341 552 337 562T323 588T293 615T246 625Q208 625 181 598Q160 576 154 546T147 441Q147 358 152 329T172 282Q197 248 244 248Z"></path><path stroke-width="0" id="E1-MJMAIN-2B" d="M56 237T56 250T70 270H369V420L370 570Q380 583 389 583Q402 583 409 568V270H707Q722 262 722 250T707 230H409V-68Q401 -82 391 -82H389H387Q375 -82 369 -68V230H70Q56 237 56 250Z"></path><path stroke-width="0" id="E1-MJMATHI-79" d="M21 287Q21 301 36 335T84 406T158 442Q199 442 224 419T250 355Q248 336 247 334Q247 331 231 288T198 191T182 105Q182 62 196 45T238 27Q261 27 281 38T312 61T339 94Q339 95 344 114T358 173T377 247Q415 397 419 404Q432 431 462 431Q475 431 483 424T494 412T496 403Q496 390 447 193T391 -23Q363 -106 294 -155T156 -205Q111 -205 77 -183T43 -117Q43 -95 50 -80T69 -58T89 -48T106 -45Q150 -45 150 -87Q150 -107 138 -122T115 -142T102 -147L99 -148Q101 -153 118 -160T152 -167H160Q177 -167 186 -165Q219 -156 247 -127T290 -65T313 -9T321 21L315 17Q309 13 296 6T270 -6Q250 -11 231 -11Q185 -11 150 11T104 82Q103 89 103 113Q103 170 138 262T173 379Q173 380 173 381Q173 390 173 393T169 400T158 404H154Q131 404 112 385T82 344T65 302T57 280Q55 278 41 278H27Q21 284 21 287Z"></path><path stroke-width="0" id="E1-MJMAIN-32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path><path stroke-width="0" id="E1-MJMATHI-7A" d="M347 338Q337 338 294 349T231 360Q211 360 197 356T174 346T162 335T155 324L153 320Q150 317 138 317Q117 317 117 325Q117 330 120 339Q133 378 163 406T229 440Q241 442 246 442Q271 442 291 425T329 392T367 375Q389 375 411 408T434 441Q435 442 449 442H462Q468 436 468 434Q468 430 463 420T449 399T432 377T418 358L411 349Q368 298 275 214T160 106L148 94L163 93Q185 93 227 82T290 71Q328 71 360 90T402 140Q406 149 409 151T424 153Q443 153 443 143Q443 138 442 134Q425 72 376 31T278 -11Q252 -11 232 6T193 40T155 57Q111 57 76 -3Q70 -11 59 -11H54H41Q35 -5 35 -2Q35 13 93 84Q132 129 225 214T340 322Q352 338 347 338Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#E1-MJMATHI-62" x="0" y="0"></use><use xlink:href="#E1-MJMATHI-6F" x="429" y="0"></use><g transform="translate(914,0)"><use xlink:href="#E1-MJMATHI-78" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#E1-MJMATHI-78" x="808" y="-213"></use></g><use xlink:href="#E1-MJMAIN-2217" x="2212" y="0"></use><g transform="translate(2934,0)"><use xlink:href="#E1-MJMAIN-33"></use><use xlink:href="#E1-MJMAIN-37" x="500" y="0"></use><use xlink:href="#E1-MJMAIN-39" x="1000" y="0"></use></g><use xlink:href="#E1-MJMAIN-2B" x="4657" y="0"></use><use xlink:href="#E1-MJMATHI-62" x="5657" y="0"></use><use xlink:href="#E1-MJMATHI-6F" x="6086" y="0"></use><g transform="translate(6571,0)"><use xlink:href="#E1-MJMATHI-78" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#E1-MJMATHI-79" x="808" y="-213"></use></g><use xlink:href="#E1-MJMAIN-2217" x="7817" y="0"></use><g transform="translate(8539,0)"><use xlink:href="#E1-MJMAIN-33"></use><use xlink:href="#E1-MJMAIN-37" x="500" y="0"></use><use xlink:href="#E1-MJMAIN-39" x="1000" y="0"></use><use transform="scale(0.707)" xlink:href="#E1-MJMAIN-32" x="2121" y="569"></use></g><use xlink:href="#E1-MJMAIN-2B" x="10715" y="0"></use><use xlink:href="#E1-MJMATHI-62" x="11715" y="0"></use><use xlink:href="#E1-MJMATHI-6F" x="12144" y="0"></use><g transform="translate(12629,0)"><use xlink:href="#E1-MJMATHI-78" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#E1-MJMATHI-7A" x="808" y="-213"></use></g><use xlink:href="#E1-MJMAIN-2217" x="13854" y="0"></use><g transform="translate(14576,0)"><use xlink:href="#E1-MJMAIN-33"></use><use xlink:href="#E1-MJMAIN-37" x="500" y="0"></use><use xlink:href="#E1-MJMAIN-39" x="1000" y="0"></use><use transform="scale(0.707)" xlink:href="#E1-MJMAIN-33" x="2121" y="569"></use></g></g></svg></span><script type="math/tex">box_x * 379 + box_y * 379^2 + box_z * 379^3</script></p><h4><a name='header-n50' class='md-header-anchor '></a>2. Self-collision</h4><div align="center">
+  <table style="width=100%">
+    <tbody><tr>
+      <td>
+      	</td><td align="middle">
+        <img src="part4/self_1.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">SelfCollision: State 1</figcaption>
+      </td>
+      <td>
+      	</td><td align="middle">
+        <img src="part4/self_2.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">SelfCollision: State 2</figcaption>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      	</td><td align="middle">
+        <img src="part4/self_3.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">SelfCollision: State 3</figcaption>
+      </td>
+      <td>
+      	</td><td align="middle">
+       	<img src="part4/self_4.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">SelfCollision: Final State</figcaption>
+      </td>
+    </tr>
+  </tbody></table>
+</div><h4><a name='header-n53' class='md-header-anchor '></a>3. Changing density</h4><div align="center">
+  <table style="width=100%">
+    <tbody><tr>
+      <td>
+      	</td><td align="middle">
+        <img src="part4/density_0.5.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">SelfCollision: density = 0.5</figcaption>
+      </td>
+      <td>
+      	</td><td align="middle">
+        <img src="part4/density_1.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">SelfCollision: density = 1</figcaption>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      	</td><td align="middle">
+        <img src="part4/density_50.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">SelfCollision: density = 50</figcaption>
+      </td>
+      <td>
+      	</td><td align="middle">
+        <img src="part4/density_1500.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">SelfCollision: density = 1500</figcaption>
+      </td>
+    </tr>
+  </tbody></table>
+</div><p>Increase density means increase the mass of each point mass. From the result, when the density was large, the cloth became more spread since the force of gravity is obvious. When the density is small, the cloth will still fold itself. </p><h4><a name='header-n56' class='md-header-anchor '></a>4. Changing ks</h4><div align="center">
+  <table style="width=100%">
+    <tbody><tr>
+      <td>
+      	</td><td align="middle">
+        <img src="part4/ks_10.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">SelfCollision: ks = 10</figcaption>
+      </td>
+      <td>
+      	</td><td align="middle">
+        <img src="part4/ks_1000.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">SelfCollision: ks = 1000</figcaption>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      	</td><td align="middle">
+        <img src="part4/ks_10000.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">SelfCollision: ks = 10000</figcaption>
+      </td>
+      <td>
+      	</td><td align="middle">
+        <img src="part4/ks_100000.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">SelfCollision: ks = 100000</figcaption>
+      </td>
+    </tr>
+  </tbody></table>
+</div><p>Larger ks means larger spring forces to point masses. From the result we can see that larger ks made the cloth more spread because the force of springs would drive the cloth to move in addition to self collision. Something interesting is when the ks is pretty small (10), the cloth was not stable because here the forces of springs were weak so the cloth cann&#39;t find a balanced point.</p><h3><a name='header-n59' class='md-header-anchor '></a><center>Part 5: Shaders</center></h3><h4><a name='header-n60' class='md-header-anchor '></a>1. Shader Program</h4><p>A shader program is a type of computer program used to ask the graphics unit to calculate the shading effect (material, light) during the rendering process. It is isolated programs that run in parallel on GPU. The shader program takes the vertex data as input and uses texture or specific processing methods (diffuse, specular, etc.) to generate a particular material to output. </p><p><strong>Vertex shader</strong>: The vertex shader is a shader stage in the rasterization pipeline which handles the processing of individual vertices. A vertex shader takes vertex data as input with per-vertex properties. The vertex shader maps a vertex to another vertex by performing transformations to the vertex to transform the vertex from object coordinates to screen coordinates.</p><p><strong>Fragment shaders</strong>: During the rasterization pipeline, after a primitive is rasterized, we get a bunch of samples (fragments).  For each fragment, we calculate the lighting effect or texture mapping to represent its effects such as colors. After the fragment shader stage, rach fragment is shaded with specific effect for display. </p><h4><a name='header-n64' class='md-header-anchor '></a>2.  Blinn-Phong shading model</h4><p>Blinn–Phong shading model consists of three fundamental shading effect: Ambient lighting, Diffuse reflection, and Specular highlights. It is based on perceptual observations instead of physical based calculations (<em>Path Tracing</em>). The ambient shading is the independent shading with a constant value to every pixel. The diffuse shading is the effect of light which reflects uniformly in all directions. The specular shading is based on mirror reflection that the effect of shading is stronger in the direction of mirror reflection. After combining all these three shadings, the Blinn-Phing shading can represent the lighting effect during the rendering process.</p><h5><a name='header-n66' class='md-header-anchor '></a>Result</h5><p>All of the following results were rendered with:</p><figure><table><thead><tr><th><span class="MathJax_SVG" tabindex="-1" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="2.311ex" height="2.344ex" viewBox="0 -755.9 995.1 1009.2" role="img" focusable="false" style="vertical-align: -0.588ex;"><defs><path stroke-width="0" id="E2-MJMATHI-6B" d="M121 647Q121 657 125 670T137 683Q138 683 209 688T282 694Q294 694 294 686Q294 679 244 477Q194 279 194 272Q213 282 223 291Q247 309 292 354T362 415Q402 442 438 442Q468 442 485 423T503 369Q503 344 496 327T477 302T456 291T438 288Q418 288 406 299T394 328Q394 353 410 369T442 390L458 393Q446 405 434 405H430Q398 402 367 380T294 316T228 255Q230 254 243 252T267 246T293 238T320 224T342 206T359 180T365 147Q365 130 360 106T354 66Q354 26 381 26Q429 26 459 145Q461 153 479 153H483Q499 153 499 144Q499 139 496 130Q455 -11 378 -11Q333 -11 305 15T277 90Q277 108 280 121T283 145Q283 167 269 183T234 206T200 217T182 220H180Q168 178 159 139T145 81T136 44T129 20T122 7T111 -2Q98 -11 83 -11Q66 -11 57 -1T48 16Q48 26 85 176T158 471L195 616Q196 629 188 632T149 637H144Q134 637 131 637T124 640T121 647Z"></path><path stroke-width="0" id="E2-MJMATHI-61" d="M33 157Q33 258 109 349T280 441Q331 441 370 392Q386 422 416 422Q429 422 439 414T449 394Q449 381 412 234T374 68Q374 43 381 35T402 26Q411 27 422 35Q443 55 463 131Q469 151 473 152Q475 153 483 153H487Q506 153 506 144Q506 138 501 117T481 63T449 13Q436 0 417 -8Q409 -10 393 -10Q359 -10 336 5T306 36L300 51Q299 52 296 50Q294 48 292 46Q233 -10 172 -10Q117 -10 75 30T33 157ZM351 328Q351 334 346 350T323 385T277 405Q242 405 210 374T160 293Q131 214 119 129Q119 126 119 118T118 106Q118 61 136 44T179 26Q217 26 254 59T298 110Q300 114 325 217T351 328Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#E2-MJMATHI-6B" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#E2-MJMATHI-61" x="736" y="-213"></use></g></svg></span><script type="math/tex">k_a</script></th><th><span class="MathJax_SVG" tabindex="-1" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="2.301ex" height="2.344ex" viewBox="0 -755.9 990.8 1009.2" role="img" focusable="false" style="vertical-align: -0.588ex;"><defs><path stroke-width="0" id="E3-MJMATHI-6B" d="M121 647Q121 657 125 670T137 683Q138 683 209 688T282 694Q294 694 294 686Q294 679 244 477Q194 279 194 272Q213 282 223 291Q247 309 292 354T362 415Q402 442 438 442Q468 442 485 423T503 369Q503 344 496 327T477 302T456 291T438 288Q418 288 406 299T394 328Q394 353 410 369T442 390L458 393Q446 405 434 405H430Q398 402 367 380T294 316T228 255Q230 254 243 252T267 246T293 238T320 224T342 206T359 180T365 147Q365 130 360 106T354 66Q354 26 381 26Q429 26 459 145Q461 153 479 153H483Q499 153 499 144Q499 139 496 130Q455 -11 378 -11Q333 -11 305 15T277 90Q277 108 280 121T283 145Q283 167 269 183T234 206T200 217T182 220H180Q168 178 159 139T145 81T136 44T129 20T122 7T111 -2Q98 -11 83 -11Q66 -11 57 -1T48 16Q48 26 85 176T158 471L195 616Q196 629 188 632T149 637H144Q134 637 131 637T124 640T121 647Z"></path><path stroke-width="0" id="E3-MJMATHI-64" d="M366 683Q367 683 438 688T511 694Q523 694 523 686Q523 679 450 384T375 83T374 68Q374 26 402 26Q411 27 422 35Q443 55 463 131Q469 151 473 152Q475 153 483 153H487H491Q506 153 506 145Q506 140 503 129Q490 79 473 48T445 8T417 -8Q409 -10 393 -10Q359 -10 336 5T306 36L300 51Q299 52 296 50Q294 48 292 46Q233 -10 172 -10Q117 -10 75 30T33 157Q33 205 53 255T101 341Q148 398 195 420T280 442Q336 442 364 400Q369 394 369 396Q370 400 396 505T424 616Q424 629 417 632T378 637H357Q351 643 351 645T353 664Q358 683 366 683ZM352 326Q329 405 277 405Q242 405 210 374T160 293Q131 214 119 129Q119 126 119 118T118 106Q118 61 136 44T179 26Q233 26 290 98L298 109L352 326Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#E3-MJMATHI-6B" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#E3-MJMATHI-64" x="736" y="-213"></use></g></svg></span><script type="math/tex">k_d</script></th><th><span class="MathJax_SVG" tabindex="-1" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="2.213ex" height="2.344ex" viewBox="0 -755.9 952.6 1009.2" role="img" focusable="false" style="vertical-align: -0.588ex;"><defs><path stroke-width="0" id="E4-MJMATHI-6B" d="M121 647Q121 657 125 670T137 683Q138 683 209 688T282 694Q294 694 294 686Q294 679 244 477Q194 279 194 272Q213 282 223 291Q247 309 292 354T362 415Q402 442 438 442Q468 442 485 423T503 369Q503 344 496 327T477 302T456 291T438 288Q418 288 406 299T394 328Q394 353 410 369T442 390L458 393Q446 405 434 405H430Q398 402 367 380T294 316T228 255Q230 254 243 252T267 246T293 238T320 224T342 206T359 180T365 147Q365 130 360 106T354 66Q354 26 381 26Q429 26 459 145Q461 153 479 153H483Q499 153 499 144Q499 139 496 130Q455 -11 378 -11Q333 -11 305 15T277 90Q277 108 280 121T283 145Q283 167 269 183T234 206T200 217T182 220H180Q168 178 159 139T145 81T136 44T129 20T122 7T111 -2Q98 -11 83 -11Q66 -11 57 -1T48 16Q48 26 85 176T158 471L195 616Q196 629 188 632T149 637H144Q134 637 131 637T124 640T121 647Z"></path><path stroke-width="0" id="E4-MJMATHI-73" d="M131 289Q131 321 147 354T203 415T300 442Q362 442 390 415T419 355Q419 323 402 308T364 292Q351 292 340 300T328 326Q328 342 337 354T354 372T367 378Q368 378 368 379Q368 382 361 388T336 399T297 405Q249 405 227 379T204 326Q204 301 223 291T278 274T330 259Q396 230 396 163Q396 135 385 107T352 51T289 7T195 -10Q118 -10 86 19T53 87Q53 126 74 143T118 160Q133 160 146 151T160 120Q160 94 142 76T111 58Q109 57 108 57T107 55Q108 52 115 47T146 34T201 27Q237 27 263 38T301 66T318 97T323 122Q323 150 302 164T254 181T195 196T148 231Q131 256 131 289Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#E4-MJMATHI-6B" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#E4-MJMATHI-73" x="736" y="-213"></use></g></svg></span><script type="math/tex">k_s</script></th><th><span class="MathJax_SVG" tabindex="-1" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="2.123ex" height="2.344ex" viewBox="0 -755.9 914.1 1009.2" role="img" focusable="false" style="vertical-align: -0.588ex;"><defs><path stroke-width="0" id="E5-MJMATHI-49" d="M43 1Q26 1 26 10Q26 12 29 24Q34 43 39 45Q42 46 54 46H60Q120 46 136 53Q137 53 138 54Q143 56 149 77T198 273Q210 318 216 344Q286 624 286 626Q284 630 284 631Q274 637 213 637H193Q184 643 189 662Q193 677 195 680T209 683H213Q285 681 359 681Q481 681 487 683H497Q504 676 504 672T501 655T494 639Q491 637 471 637Q440 637 407 634Q393 631 388 623Q381 609 337 432Q326 385 315 341Q245 65 245 59Q245 52 255 50T307 46H339Q345 38 345 37T342 19Q338 6 332 0H316Q279 2 179 2Q143 2 113 2T65 2T43 1Z"></path><path stroke-width="0" id="E5-MJMATHI-61" d="M33 157Q33 258 109 349T280 441Q331 441 370 392Q386 422 416 422Q429 422 439 414T449 394Q449 381 412 234T374 68Q374 43 381 35T402 26Q411 27 422 35Q443 55 463 131Q469 151 473 152Q475 153 483 153H487Q506 153 506 144Q506 138 501 117T481 63T449 13Q436 0 417 -8Q409 -10 393 -10Q359 -10 336 5T306 36L300 51Q299 52 296 50Q294 48 292 46Q233 -10 172 -10Q117 -10 75 30T33 157ZM351 328Q351 334 346 350T323 385T277 405Q242 405 210 374T160 293Q131 214 119 129Q119 126 119 118T118 106Q118 61 136 44T179 26Q217 26 254 59T298 110Q300 114 325 217T351 328Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#E5-MJMATHI-49" x="0" y="0"></use><use transform="scale(0.707)" xlink:href="#E5-MJMATHI-61" x="622" y="-213"></use></g></svg></span><script type="math/tex">I_a</script></th><th><span class="MathJax_SVG" tabindex="-1" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="1.259ex" height="1.76ex" viewBox="-39 -504.6 542 757.9" role="img" focusable="false" style="vertical-align: -0.588ex; margin-left: -0.091ex;"><defs><path stroke-width="0" id="E6-MJMATHI-70" d="M23 287Q24 290 25 295T30 317T40 348T55 381T75 411T101 433T134 442Q209 442 230 378L240 387Q302 442 358 442Q423 442 460 395T497 281Q497 173 421 82T249 -10Q227 -10 210 -4Q199 1 187 11T168 28L161 36Q160 35 139 -51T118 -138Q118 -144 126 -145T163 -148H188Q194 -155 194 -157T191 -175Q188 -187 185 -190T172 -194Q170 -194 161 -194T127 -193T65 -192Q-5 -192 -24 -194H-32Q-39 -187 -39 -183Q-37 -156 -26 -148H-6Q28 -147 33 -136Q36 -130 94 103T155 350Q156 355 156 364Q156 405 131 405Q109 405 94 377T71 316T59 280Q57 278 43 278H29Q23 284 23 287ZM178 102Q200 26 252 26Q282 26 310 49T356 107Q374 141 392 215T411 325V331Q411 405 350 405Q339 405 328 402T306 393T286 380T269 365T254 350T243 336T235 326L232 322Q232 321 229 308T218 264T204 212Q178 106 178 102Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#E6-MJMATHI-70" x="0" y="0"></use></g></svg></span><script type="math/tex">p</script></th><th><span class="MathJax_SVG" tabindex="-1" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="8.196ex" height="1.994ex" viewBox="0 -755.9 3529 858.4" role="img" focusable="false" style="vertical-align: -0.238ex;"><defs><path stroke-width="0" id="E7-MJMATHI-4E" d="M234 637Q231 637 226 637Q201 637 196 638T191 649Q191 676 202 682Q204 683 299 683Q376 683 387 683T401 677Q612 181 616 168L670 381Q723 592 723 606Q723 633 659 637Q635 637 635 648Q635 650 637 660Q641 676 643 679T653 683Q656 683 684 682T767 680Q817 680 843 681T873 682Q888 682 888 672Q888 650 880 642Q878 637 858 637Q787 633 769 597L620 7Q618 0 599 0Q585 0 582 2Q579 5 453 305L326 604L261 344Q196 88 196 79Q201 46 268 46H278Q284 41 284 38T282 19Q278 6 272 0H259Q228 2 151 2Q123 2 100 2T63 2T46 1Q31 1 31 10Q31 14 34 26T39 40Q41 46 62 46Q130 49 150 85Q154 91 221 362L289 634Q287 635 234 637Z"></path><path stroke-width="0" id="E7-MJMATHI-6F" d="M201 -11Q126 -11 80 38T34 156Q34 221 64 279T146 380Q222 441 301 441Q333 441 341 440Q354 437 367 433T402 417T438 387T464 338T476 268Q476 161 390 75T201 -11ZM121 120Q121 70 147 48T206 26Q250 26 289 58T351 142Q360 163 374 216T388 308Q388 352 370 375Q346 405 306 405Q243 405 195 347Q158 303 140 230T121 120Z"></path><path stroke-width="0" id="E7-MJMATHI-72" d="M21 287Q22 290 23 295T28 317T38 348T53 381T73 411T99 433T132 442Q161 442 183 430T214 408T225 388Q227 382 228 382T236 389Q284 441 347 441H350Q398 441 422 400Q430 381 430 363Q430 333 417 315T391 292T366 288Q346 288 334 299T322 328Q322 376 378 392Q356 405 342 405Q286 405 239 331Q229 315 224 298T190 165Q156 25 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 114 189T154 366Q154 405 128 405Q107 405 92 377T68 316T57 280Q55 278 41 278H27Q21 284 21 287Z"></path><path stroke-width="0" id="E7-MJMATHI-6D" d="M21 287Q22 293 24 303T36 341T56 388T88 425T132 442T175 435T205 417T221 395T229 376L231 369Q231 367 232 367L243 378Q303 442 384 442Q401 442 415 440T441 433T460 423T475 411T485 398T493 385T497 373T500 364T502 357L510 367Q573 442 659 442Q713 442 746 415T780 336Q780 285 742 178T704 50Q705 36 709 31T724 26Q752 26 776 56T815 138Q818 149 821 151T837 153Q857 153 857 145Q857 144 853 130Q845 101 831 73T785 17T716 -10Q669 -10 648 17T627 73Q627 92 663 193T700 345Q700 404 656 404H651Q565 404 506 303L499 291L466 157Q433 26 428 16Q415 -11 385 -11Q372 -11 364 -4T353 8T350 18Q350 29 384 161L420 307Q423 322 423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 181Q151 335 151 342Q154 357 154 369Q154 405 129 405Q107 405 92 377T69 316T57 280Q55 278 41 278H27Q21 284 21 287Z"></path><path stroke-width="0" id="E7-MJMATHI-61" d="M33 157Q33 258 109 349T280 441Q331 441 370 392Q386 422 416 422Q429 422 439 414T449 394Q449 381 412 234T374 68Q374 43 381 35T402 26Q411 27 422 35Q443 55 463 131Q469 151 473 152Q475 153 483 153H487Q506 153 506 144Q506 138 501 117T481 63T449 13Q436 0 417 -8Q409 -10 393 -10Q359 -10 336 5T306 36L300 51Q299 52 296 50Q294 48 292 46Q233 -10 172 -10Q117 -10 75 30T33 157ZM351 328Q351 334 346 350T323 385T277 405Q242 405 210 374T160 293Q131 214 119 129Q119 126 119 118T118 106Q118 61 136 44T179 26Q217 26 254 59T298 110Q300 114 325 217T351 328Z"></path><path stroke-width="0" id="E7-MJMATHI-6C" d="M117 59Q117 26 142 26Q179 26 205 131Q211 151 215 152Q217 153 225 153H229Q238 153 241 153T246 151T248 144Q247 138 245 128T234 90T214 43T183 6T137 -11Q101 -11 70 11T38 85Q38 97 39 102L104 360Q167 615 167 623Q167 626 166 628T162 632T157 634T149 635T141 636T132 637T122 637Q112 637 109 637T101 638T95 641T94 647Q94 649 96 661Q101 680 107 682T179 688Q194 689 213 690T243 693T254 694Q266 694 266 686Q266 675 193 386T118 83Q118 81 118 75T117 65V59Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#E7-MJMATHI-4E" x="0" y="0"></use><use xlink:href="#E7-MJMATHI-6F" x="888" y="0"></use><use xlink:href="#E7-MJMATHI-72" x="1373" y="0"></use><use xlink:href="#E7-MJMATHI-6D" x="1824" y="0"></use><use xlink:href="#E7-MJMATHI-61" x="2702" y="0"></use><use xlink:href="#E7-MJMATHI-6C" x="3231" y="0"></use></g></svg></span><script type="math/tex">Normal</script></th><th><span class="MathJax_SVG" tabindex="-1" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="7.237ex" height="2.461ex" viewBox="0 -755.9 3116 1059.4" role="img" focusable="false" style="vertical-align: -0.705ex;"><defs><path stroke-width="0" id="E8-MJMATHI-48" d="M228 637Q194 637 192 641Q191 643 191 649Q191 673 202 682Q204 683 219 683Q260 681 355 681Q389 681 418 681T463 682T483 682Q499 682 499 672Q499 670 497 658Q492 641 487 638H485Q483 638 480 638T473 638T464 637T455 637Q416 636 405 634T387 623Q384 619 355 500Q348 474 340 442T328 395L324 380Q324 378 469 378H614L615 381Q615 384 646 504Q674 619 674 627T617 637Q594 637 587 639T580 648Q580 650 582 660Q586 677 588 679T604 682Q609 682 646 681T740 680Q802 680 835 681T871 682Q888 682 888 672Q888 645 876 638H874Q872 638 869 638T862 638T853 637T844 637Q805 636 794 634T776 623Q773 618 704 340T634 58Q634 51 638 51Q646 48 692 46H723Q729 38 729 37T726 19Q722 6 716 0H701Q664 2 567 2Q533 2 504 2T458 2T437 1Q420 1 420 10Q420 15 423 24Q428 43 433 45Q437 46 448 46H454Q481 46 514 49Q520 50 522 50T528 55T534 64T540 82T547 110T558 153Q565 181 569 198Q602 330 602 331T457 332H312L279 197Q245 63 245 58Q245 51 253 49T303 46H334Q340 38 340 37T337 19Q333 6 327 0H312Q275 2 178 2Q144 2 115 2T69 2T48 1Q31 1 31 10Q31 12 34 24Q39 43 44 45Q48 46 59 46H65Q92 46 125 49Q139 52 144 61Q147 65 216 339T285 628Q285 635 228 637Z"></path><path stroke-width="0" id="E8-MJMATHI-65" d="M39 168Q39 225 58 272T107 350T174 402T244 433T307 442H310Q355 442 388 420T421 355Q421 265 310 237Q261 224 176 223Q139 223 138 221Q138 219 132 186T125 128Q125 81 146 54T209 26T302 45T394 111Q403 121 406 121Q410 121 419 112T429 98T420 82T390 55T344 24T281 -1T205 -11Q126 -11 83 42T39 168ZM373 353Q367 405 305 405Q272 405 244 391T199 357T170 316T154 280T149 261Q149 260 169 260Q282 260 327 284T373 353Z"></path><path stroke-width="0" id="E8-MJMATHI-69" d="M184 600Q184 624 203 642T247 661Q265 661 277 649T290 619Q290 596 270 577T226 557Q211 557 198 567T184 600ZM21 287Q21 295 30 318T54 369T98 420T158 442Q197 442 223 419T250 357Q250 340 236 301T196 196T154 83Q149 61 149 51Q149 26 166 26Q175 26 185 29T208 43T235 78T260 137Q263 149 265 151T282 153Q302 153 302 143Q302 135 293 112T268 61T223 11T161 -11Q129 -11 102 10T74 74Q74 91 79 106T122 220Q160 321 166 341T173 380Q173 404 156 404H154Q124 404 99 371T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Z"></path><path stroke-width="0" id="E8-MJMATHI-67" d="M311 43Q296 30 267 15T206 0Q143 0 105 45T66 160Q66 265 143 353T314 442Q361 442 401 394L404 398Q406 401 409 404T418 412T431 419T447 422Q461 422 470 413T480 394Q480 379 423 152T363 -80Q345 -134 286 -169T151 -205Q10 -205 10 -137Q10 -111 28 -91T74 -71Q89 -71 102 -80T116 -111Q116 -121 114 -130T107 -144T99 -154T92 -162L90 -164H91Q101 -167 151 -167Q189 -167 211 -155Q234 -144 254 -122T282 -75Q288 -56 298 -13Q311 35 311 43ZM384 328L380 339Q377 350 375 354T369 368T359 382T346 393T328 402T306 405Q262 405 221 352Q191 313 171 233T151 117Q151 38 213 38Q269 38 323 108L331 118L384 328Z"></path><path stroke-width="0" id="E8-MJMATHI-68" d="M137 683Q138 683 209 688T282 694Q294 694 294 685Q294 674 258 534Q220 386 220 383Q220 381 227 388Q288 442 357 442Q411 442 444 415T478 336Q478 285 440 178T402 50Q403 36 407 31T422 26Q450 26 474 56T513 138Q516 149 519 151T535 153Q555 153 555 145Q555 144 551 130Q535 71 500 33Q466 -10 419 -10H414Q367 -10 346 17T325 74Q325 90 361 192T398 345Q398 404 354 404H349Q266 404 205 306L198 293L164 158Q132 28 127 16Q114 -11 83 -11Q69 -11 59 -2T48 16Q48 30 121 320L195 616Q195 629 188 632T149 637H128Q122 643 122 645T124 664Q129 683 137 683Z"></path><path stroke-width="0" id="E8-MJMATHI-74" d="M26 385Q19 392 19 395Q19 399 22 411T27 425Q29 430 36 430T87 431H140L159 511Q162 522 166 540T173 566T179 586T187 603T197 615T211 624T229 626Q247 625 254 615T261 596Q261 589 252 549T232 470L222 433Q222 431 272 431H323Q330 424 330 420Q330 398 317 385H210L174 240Q135 80 135 68Q135 26 162 26Q197 26 230 60T283 144Q285 150 288 151T303 153H307Q322 153 322 145Q322 142 319 133Q314 117 301 95T267 48T216 6T155 -11Q125 -11 98 4T59 56Q57 64 57 83V101L92 241Q127 382 128 383Q128 385 77 385H26Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#E8-MJMATHI-48" x="0" y="0"></use><use xlink:href="#E8-MJMATHI-65" x="888" y="0"></use><use xlink:href="#E8-MJMATHI-69" x="1354" y="0"></use><use xlink:href="#E8-MJMATHI-67" x="1699" y="0"></use><use xlink:href="#E8-MJMATHI-68" x="2179" y="0"></use><use xlink:href="#E8-MJMATHI-74" x="2755" y="0"></use></g></svg></span><script type="math/tex">Height</script></th></tr></thead><tbody><tr><td>0.1</td><td>0.5</td><td>1.0</td><td>(1, 1, 1)</td><td>64</td><td>100</td><td>0.02</td></tr></tbody></table></figure><div align="center">
+  <table style="width=100%">
+    <tbody><tr>
+      <td>
+      	</td><td align="middle">
+        <img src="part5/ambient.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">Blinn-Phong shading with only ambient component</figcaption>
+      </td>
+      <td>
+      	</td><td align="middle">
+        <img src="part5/diffuse.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">Blinn-Phong shading with only diffuse component</figcaption>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      	</td><td align="middle">
+        <img src="part5/specular.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">Blinn-Phong shading with only specular component</figcaption>
+      </td>
+      <td>
+      	</td><td align="middle">
+        <img src="part5/phong.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">Blinn-Phong shading with all components</figcaption>
+      </td>
+    </tr>
+  </tbody></table>
+</div><h4><a name='header-n87' class='md-header-anchor '></a>3.  Texture Mapping shading model</h4><div align="center">
+  <table style="width=100%">
+    <tbody><tr>
+      <td>
+      	</td><td align="middle">
+        <img src="part5/texture1.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">Texture mapping shading start status</figcaption>
+      </td>
+      <td>
+      	</td><td align="middle">
+        <img src="part5/texture2.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">Texture mapping shading final status</figcaption>
+      </td>
+    </tr>
+  </tbody></table>
+</div><h4><a name='header-n90' class='md-header-anchor '></a>4. Bump and Displacement Mapping shading model</h4><figure><table><thead><tr><th><span class="MathJax_SVG" tabindex="-1" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="8.196ex" height="1.994ex" viewBox="0 -755.9 3529 858.4" role="img" focusable="false" style="vertical-align: -0.238ex;"><defs><path stroke-width="0" id="E9-MJMATHI-4E" d="M234 637Q231 637 226 637Q201 637 196 638T191 649Q191 676 202 682Q204 683 299 683Q376 683 387 683T401 677Q612 181 616 168L670 381Q723 592 723 606Q723 633 659 637Q635 637 635 648Q635 650 637 660Q641 676 643 679T653 683Q656 683 684 682T767 680Q817 680 843 681T873 682Q888 682 888 672Q888 650 880 642Q878 637 858 637Q787 633 769 597L620 7Q618 0 599 0Q585 0 582 2Q579 5 453 305L326 604L261 344Q196 88 196 79Q201 46 268 46H278Q284 41 284 38T282 19Q278 6 272 0H259Q228 2 151 2Q123 2 100 2T63 2T46 1Q31 1 31 10Q31 14 34 26T39 40Q41 46 62 46Q130 49 150 85Q154 91 221 362L289 634Q287 635 234 637Z"></path><path stroke-width="0" id="E9-MJMATHI-6F" d="M201 -11Q126 -11 80 38T34 156Q34 221 64 279T146 380Q222 441 301 441Q333 441 341 440Q354 437 367 433T402 417T438 387T464 338T476 268Q476 161 390 75T201 -11ZM121 120Q121 70 147 48T206 26Q250 26 289 58T351 142Q360 163 374 216T388 308Q388 352 370 375Q346 405 306 405Q243 405 195 347Q158 303 140 230T121 120Z"></path><path stroke-width="0" id="E9-MJMATHI-72" d="M21 287Q22 290 23 295T28 317T38 348T53 381T73 411T99 433T132 442Q161 442 183 430T214 408T225 388Q227 382 228 382T236 389Q284 441 347 441H350Q398 441 422 400Q430 381 430 363Q430 333 417 315T391 292T366 288Q346 288 334 299T322 328Q322 376 378 392Q356 405 342 405Q286 405 239 331Q229 315 224 298T190 165Q156 25 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 114 189T154 366Q154 405 128 405Q107 405 92 377T68 316T57 280Q55 278 41 278H27Q21 284 21 287Z"></path><path stroke-width="0" id="E9-MJMATHI-6D" d="M21 287Q22 293 24 303T36 341T56 388T88 425T132 442T175 435T205 417T221 395T229 376L231 369Q231 367 232 367L243 378Q303 442 384 442Q401 442 415 440T441 433T460 423T475 411T485 398T493 385T497 373T500 364T502 357L510 367Q573 442 659 442Q713 442 746 415T780 336Q780 285 742 178T704 50Q705 36 709 31T724 26Q752 26 776 56T815 138Q818 149 821 151T837 153Q857 153 857 145Q857 144 853 130Q845 101 831 73T785 17T716 -10Q669 -10 648 17T627 73Q627 92 663 193T700 345Q700 404 656 404H651Q565 404 506 303L499 291L466 157Q433 26 428 16Q415 -11 385 -11Q372 -11 364 -4T353 8T350 18Q350 29 384 161L420 307Q423 322 423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 181Q151 335 151 342Q154 357 154 369Q154 405 129 405Q107 405 92 377T69 316T57 280Q55 278 41 278H27Q21 284 21 287Z"></path><path stroke-width="0" id="E9-MJMATHI-61" d="M33 157Q33 258 109 349T280 441Q331 441 370 392Q386 422 416 422Q429 422 439 414T449 394Q449 381 412 234T374 68Q374 43 381 35T402 26Q411 27 422 35Q443 55 463 131Q469 151 473 152Q475 153 483 153H487Q506 153 506 144Q506 138 501 117T481 63T449 13Q436 0 417 -8Q409 -10 393 -10Q359 -10 336 5T306 36L300 51Q299 52 296 50Q294 48 292 46Q233 -10 172 -10Q117 -10 75 30T33 157ZM351 328Q351 334 346 350T323 385T277 405Q242 405 210 374T160 293Q131 214 119 129Q119 126 119 118T118 106Q118 61 136 44T179 26Q217 26 254 59T298 110Q300 114 325 217T351 328Z"></path><path stroke-width="0" id="E9-MJMATHI-6C" d="M117 59Q117 26 142 26Q179 26 205 131Q211 151 215 152Q217 153 225 153H229Q238 153 241 153T246 151T248 144Q247 138 245 128T234 90T214 43T183 6T137 -11Q101 -11 70 11T38 85Q38 97 39 102L104 360Q167 615 167 623Q167 626 166 628T162 632T157 634T149 635T141 636T132 637T122 637Q112 637 109 637T101 638T95 641T94 647Q94 649 96 661Q101 680 107 682T179 688Q194 689 213 690T243 693T254 694Q266 694 266 686Q266 675 193 386T118 83Q118 81 118 75T117 65V59Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#E9-MJMATHI-4E" x="0" y="0"></use><use xlink:href="#E9-MJMATHI-6F" x="888" y="0"></use><use xlink:href="#E9-MJMATHI-72" x="1373" y="0"></use><use xlink:href="#E9-MJMATHI-6D" x="1824" y="0"></use><use xlink:href="#E9-MJMATHI-61" x="2702" y="0"></use><use xlink:href="#E9-MJMATHI-6C" x="3231" y="0"></use></g></svg></span><script type="math/tex">Normal </script></th><th><span class="MathJax_SVG" tabindex="-1" style="font-size: 100%; display: inline-block;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="7.237ex" height="2.461ex" viewBox="0 -755.9 3116 1059.4" role="img" focusable="false" style="vertical-align: -0.705ex;"><defs><path stroke-width="0" id="E10-MJMATHI-48" d="M228 637Q194 637 192 641Q191 643 191 649Q191 673 202 682Q204 683 219 683Q260 681 355 681Q389 681 418 681T463 682T483 682Q499 682 499 672Q499 670 497 658Q492 641 487 638H485Q483 638 480 638T473 638T464 637T455 637Q416 636 405 634T387 623Q384 619 355 500Q348 474 340 442T328 395L324 380Q324 378 469 378H614L615 381Q615 384 646 504Q674 619 674 627T617 637Q594 637 587 639T580 648Q580 650 582 660Q586 677 588 679T604 682Q609 682 646 681T740 680Q802 680 835 681T871 682Q888 682 888 672Q888 645 876 638H874Q872 638 869 638T862 638T853 637T844 637Q805 636 794 634T776 623Q773 618 704 340T634 58Q634 51 638 51Q646 48 692 46H723Q729 38 729 37T726 19Q722 6 716 0H701Q664 2 567 2Q533 2 504 2T458 2T437 1Q420 1 420 10Q420 15 423 24Q428 43 433 45Q437 46 448 46H454Q481 46 514 49Q520 50 522 50T528 55T534 64T540 82T547 110T558 153Q565 181 569 198Q602 330 602 331T457 332H312L279 197Q245 63 245 58Q245 51 253 49T303 46H334Q340 38 340 37T337 19Q333 6 327 0H312Q275 2 178 2Q144 2 115 2T69 2T48 1Q31 1 31 10Q31 12 34 24Q39 43 44 45Q48 46 59 46H65Q92 46 125 49Q139 52 144 61Q147 65 216 339T285 628Q285 635 228 637Z"></path><path stroke-width="0" id="E10-MJMATHI-65" d="M39 168Q39 225 58 272T107 350T174 402T244 433T307 442H310Q355 442 388 420T421 355Q421 265 310 237Q261 224 176 223Q139 223 138 221Q138 219 132 186T125 128Q125 81 146 54T209 26T302 45T394 111Q403 121 406 121Q410 121 419 112T429 98T420 82T390 55T344 24T281 -1T205 -11Q126 -11 83 42T39 168ZM373 353Q367 405 305 405Q272 405 244 391T199 357T170 316T154 280T149 261Q149 260 169 260Q282 260 327 284T373 353Z"></path><path stroke-width="0" id="E10-MJMATHI-69" d="M184 600Q184 624 203 642T247 661Q265 661 277 649T290 619Q290 596 270 577T226 557Q211 557 198 567T184 600ZM21 287Q21 295 30 318T54 369T98 420T158 442Q197 442 223 419T250 357Q250 340 236 301T196 196T154 83Q149 61 149 51Q149 26 166 26Q175 26 185 29T208 43T235 78T260 137Q263 149 265 151T282 153Q302 153 302 143Q302 135 293 112T268 61T223 11T161 -11Q129 -11 102 10T74 74Q74 91 79 106T122 220Q160 321 166 341T173 380Q173 404 156 404H154Q124 404 99 371T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Z"></path><path stroke-width="0" id="E10-MJMATHI-67" d="M311 43Q296 30 267 15T206 0Q143 0 105 45T66 160Q66 265 143 353T314 442Q361 442 401 394L404 398Q406 401 409 404T418 412T431 419T447 422Q461 422 470 413T480 394Q480 379 423 152T363 -80Q345 -134 286 -169T151 -205Q10 -205 10 -137Q10 -111 28 -91T74 -71Q89 -71 102 -80T116 -111Q116 -121 114 -130T107 -144T99 -154T92 -162L90 -164H91Q101 -167 151 -167Q189 -167 211 -155Q234 -144 254 -122T282 -75Q288 -56 298 -13Q311 35 311 43ZM384 328L380 339Q377 350 375 354T369 368T359 382T346 393T328 402T306 405Q262 405 221 352Q191 313 171 233T151 117Q151 38 213 38Q269 38 323 108L331 118L384 328Z"></path><path stroke-width="0" id="E10-MJMATHI-68" d="M137 683Q138 683 209 688T282 694Q294 694 294 685Q294 674 258 534Q220 386 220 383Q220 381 227 388Q288 442 357 442Q411 442 444 415T478 336Q478 285 440 178T402 50Q403 36 407 31T422 26Q450 26 474 56T513 138Q516 149 519 151T535 153Q555 153 555 145Q555 144 551 130Q535 71 500 33Q466 -10 419 -10H414Q367 -10 346 17T325 74Q325 90 361 192T398 345Q398 404 354 404H349Q266 404 205 306L198 293L164 158Q132 28 127 16Q114 -11 83 -11Q69 -11 59 -2T48 16Q48 30 121 320L195 616Q195 629 188 632T149 637H128Q122 643 122 645T124 664Q129 683 137 683Z"></path><path stroke-width="0" id="E10-MJMATHI-74" d="M26 385Q19 392 19 395Q19 399 22 411T27 425Q29 430 36 430T87 431H140L159 511Q162 522 166 540T173 566T179 586T187 603T197 615T211 624T229 626Q247 625 254 615T261 596Q261 589 252 549T232 470L222 433Q222 431 272 431H323Q330 424 330 420Q330 398 317 385H210L174 240Q135 80 135 68Q135 26 162 26Q197 26 230 60T283 144Q285 150 288 151T303 153H307Q322 153 322 145Q322 142 319 133Q314 117 301 95T267 48T216 6T155 -11Q125 -11 98 4T59 56Q57 64 57 83V101L92 241Q127 382 128 383Q128 385 77 385H26Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#E10-MJMATHI-48" x="0" y="0"></use><use xlink:href="#E10-MJMATHI-65" x="888" y="0"></use><use xlink:href="#E10-MJMATHI-69" x="1354" y="0"></use><use xlink:href="#E10-MJMATHI-67" x="1699" y="0"></use><use xlink:href="#E10-MJMATHI-68" x="2179" y="0"></use><use xlink:href="#E10-MJMATHI-74" x="2755" y="0"></use></g></svg></span><script type="math/tex">Height </script></th></tr></thead><tbody><tr><td>10</td><td>0.2</td></tr></tbody></table></figure><h5><a name='header-n98' class='md-header-anchor '></a>4.1 Bump Mapping</h5><div align="center">
+  <table style="width=100%">
+    <tbody><tr>
+      <td>
+      	</td><td align="middle">
+        <img src="part5/bump_sphere.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">Bump mapping shading: Sphere, normal = 10, height = 0.2</figcaption>
+      </td>
+      <td>
+      	</td><td align="middle">
+        <img src="part5/bump_cloth.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">Bump mapping shading: Cloth, normal = 10, height = 0.2</figcaption>
+      </td>
+    </tr>
+  </tbody></table>
+</div><h5><a name='header-n101' class='md-header-anchor '></a>4.2 Displacement Mapping</h5><p><img src='part5/dis_sphere.png' alt='dis_sphere' referrerPolicy='no-referrer' /></p><center>Displacement mapping shading: Sphere, normal = 10, height = 0.2</center><p><strong>Differences between bump mapping and displacement mapping</strong></p><p>Bump mapping only changes the fragment shader to change the normal vector of the fragment. So from the result, we can see that the height can be mapped to display with an illusion of details. However, the displacement mapping also changes the vertex shader with the position of an object. By modifying the position of the vertices, the height is more visible and realistic.  Comparing two spheres, the sphere with bump mapping remains its shape, but the other sphere with displacement mapping is abnormal. </p><h5><a name='header-n106' class='md-header-anchor '></a>4.3 Changing the sphere mesh&#39;s coarseness</h5><figure><table><thead><tr><th>-o</th><th>-a</th><th>Normal</th><th>Height</th></tr></thead><tbody><tr><td>16</td><td>16</td><td>10</td><td>0.2</td></tr></tbody></table></figure><div align="center">
+  <table style="width=100%">
+    <tbody><tr>
+      <td>
+      	</td><td align="middle">
+        <img src="part5/bump_1616.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">Bump mapping shading: Sphere</figcaption>
+      </td>
+      <td>
+      	</td><td align="middle">
+        <img src="part5/dis_1616.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">Displacement mapping shading: Sphere</figcaption>
+      </td>
+    </tr>
+  </tbody></table>
+</div><figure><table><thead><tr><th>-o</th><th>-a</th><th>Normal</th><th>Height</th></tr></thead><tbody><tr><td>128</td><td>128</td><td>10</td><td>0.2</td></tr></tbody></table></figure><div align="center">
+  <table style="width=100%">
+    <tbody><tr>
+      <td>
+      	</td><td align="middle">
+        <img src="part5/bump_128.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">Bump mapping shading: Sphere</figcaption>
+      </td>
+      <td>
+      	</td><td align="middle">
+        <img src="part5/dis_128.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">Displacement mapping shading: Sphere</figcaption>
+      </td>
+    </tr>
+  </tbody></table>
+</div><p>When increasing the coarseness from 16 to 128, the changes for bump mapping is slight with only little changes on details. However, the changes for displacement mapping is noticeable. When the values of <code>-a</code> and <code>-o</code> increase, there are more fragments, and each fragment has a smaller size. So the influence of position changing for a fragment is slighter. </p><h4><a name='header-n133' class='md-header-anchor '></a>5. Mirror shading model</h4><div align="center">
+  <table style="width=100%">
+    <tbody><tr>
+      <td>
+      	</td><td align="middle">
+        <img src="part5/mirror_sphere.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">Mirror shading: Sphere</figcaption>
+      </td>
+      <td>
+      	</td><td align="middle">
+        <img src="part5/mirror_cloth.png" width="400px" onerror="this.style.display = 'none';">
+        <figcaption align="middle">Mirror shading: Cloth</figcaption>
+      </td>
+    </tr>
+  </tbody></table>
+</div></div>
+</body>
+</html>
