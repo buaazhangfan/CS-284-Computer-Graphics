@@ -1,8 +1,0 @@
-/Applications/CLion.app/Contents/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /Users/apple/Desktop/CS284/hw0-intro
--- Found Freetype: /usr/local/lib/libfreetype.dylib (found version "2.9.1") 
--- Using Cocoa for window creation
--- Using NSGL for context creation
--- Building GLFW only for the native architecture
--- Configuring done
--- Generating done
--- Build files have been written to: /Users/apple/Desktop/CS284/hw0-intro/cmake-build-debug
